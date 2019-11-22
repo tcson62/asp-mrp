@@ -88,6 +88,8 @@ change(N) :- N1 = #count{1,(A,B,C,D) : add(postcondition(A, B, C, D))},
                      N3 = #count{1,A : add(action(A))},
                      R3 = #count{1,A :  remove(action(A))},
                      N = N1 + N2 + N3 + R1 + R2 + R3.
+
+
                      
 #minimize {N : change(N)}.                     
 

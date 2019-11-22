@@ -1,7 +1,6 @@
-#include <incmode>.
+%%%
+%%% 
 
-#program base.
-  
 h(X, 1) :- initialState(X, value(X, true)).
 
 % condition for the robot plans 
@@ -13,6 +12,7 @@ contradictory(false, true).
 
 {add(action(A))} :- robot(occurs(A,_)), not human(action(A)).
 action(action(A)) :- add(action(A)). 
+action(action(noop)).
 
 %% false actions could be removed if necessary 
 
@@ -61,36 +61,19 @@ true(precondition(action(A), X, value(X, BoolV))) :- human(precondition(action(A
 		not add(precondition(action(A), X, value(X, NBoolV))), 
 		not remove(precondition(action(A), X, value(X, BoolV))). 
 
-
-#program step(t).
-
-time(t). 
-
-h(X, t) :- action(action(A)), occurs(A, t-1), 
+h(X, T+1) :- time(T), action(action(A)), occurs(A, T), 
                    true(postcondition(action(A), effect(unconditional), X, value(X, true))).
                    
-h(X, t) :- action(action(A)), occurs(A, t-1), 
-                   h(X, t-1), 
+h(X, T+1) :- time(T), action(action(A)), occurs(A, T), 
+                   h(X, T), 
                    not true(postcondition(action(A), effect(unconditional), X, value(X, false))).                  
 
-executable(A, t):-  action(action(A)), 
-                    #count {1,X : g_precondition(action(A), X, value(X, true)), not h(X, t)} == 0. 
+executable(A, T):-  time(T), action(action(A)), 
+                    #count {1,X : g_precondition(action(A), X, value(X, true)), not h(X, T)} == 0. 
 
-:- action(action(A)), occurs(A, t), not executable(A, t). 
+:- time(T), action(action(A)), occurs(A, T), not executable(A, T). 
 
-1{occurs(A, t) : action(action(A))} 1 :- goal(X, value(X, true)), not h(X, t).
+1{occurs(A, T) : action(action(A))} 1 :- time(T), goal(X, value(X, true)), not h(X, T).
 
-#program check(t).
-
-:- query(t), goal(X, value(X, true)), not h(X, t).
-
-#show occurs/2. 
-#show new_action/1.
-#show p_action(A) : occurs(A,_). 
-#show p_postcondition(action(A),B,C,D) : occurs(A,_),g_postcondition(action(A),B,C,D).
-#show p_precondition(action(A),B,C) : occurs(A,_),g_precondition(action(A),B,C).
-#show time/1. 
-#show new_precondition/3.
-#show new_postcondition/4.
-
-
+:- maxTime(N), goal(X, value(X, true)), not h(X, N).
+  
