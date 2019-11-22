@@ -1,0 +1,103 @@
+remove(postcondition(action(("unstack",constant("e"),constant("e"))),effect(unconditional),variable(("clear",constant("e"))),value(variable(("clear",constant("e"))),false)))
+
+true(postcondition(action(("unstack",constant("d"),constant("d"))),effect(unconditional),variable(("clear",constant("d"))),value(variable(("clear",constant("d"))),false)))
+
+
+ % initial state
+initialState(variable(("clear", constant("e"))), value(variable(("clear", constant("e"))), true)).
+initialState(variable(("ontable", constant("d"))), value(variable(("ontable", constant("d"))), true)).
+initialState(variable(("on", constant("e"), constant("g"))), value(variable(("on", constant("e"), constant("g"))), true)).
+initialState(variable(("on", constant("g"), constant("b"))), value(variable(("on", constant("g"), constant("b"))), true)).
+initialState(variable(("on", constant("b"), constant("a"))), value(variable(("on", constant("b"), constant("a"))), true)).
+initialState(variable(("on", constant("a"), constant("f"))), value(variable(("on", constant("a"), constant("f"))), true)).
+initialState(variable(("on", constant("f"), constant("c"))), value(variable(("on", constant("f"), constant("c"))), true)).
+initialState(variable(("on", constant("c"), constant("d"))), value(variable(("on", constant("c"), constant("d"))), true)).
+initialState(variable("handempty"), value(variable("handempty"), true)).
+
+
+e    
+g
+b
+a
+f
+c
+d 
+
+occurs(("unstack",constant("e"),constant("g")),1). 
+occurs(("putdown",constant("e")),2). 
+
+    
+g
+b
+a
+f
+c
+d    e
+
+
+g
+b
+a
+f
+c
+d      e 
+t(variable(("clear",constant("e")))) t(variable(("ontable",constant("e")))) t(variable(("ontable",constant("d")))) t(variable(("on",constant("g"),constant("b")))) t(variable(("on",constant("b"),constant("a")))) t(variable(("on",constant("a"),constant("f")))) t(variable(("on",constant("f"),constant("c")))) t(variable(("on",constant("c"),constant("d")))) change(0)
+
+
+occurs(("unstack",constant("g"),constant("b")),3). 
+occurs(("putdown",constant("g")),4). 
+occurs(("unstack",constant("b"),constant("a")),5). 
+occurs(("putdown",constant("b")),6). 
+occurs(("unstack",constant("a"),constant("f")),7). 
+occurs(("putdown",constant("a")),8). 
+occurs(("unstack",constant("f"),constant("c")),9). 
+occurs(("stack",constant("f"),constant("e")),10). 
+occurs(("unstack",constant("c"),constant("d")),11). 
+occurs(("stack",constant("c"),constant("f")),12). 
+occurs(("pickup",constant("b")),13). 
+occurs(("stack",constant("b"),constant("c")),14). 
+occurs(("pickup",constant("d")),15). 
+occurs(("stack",constant("d"),constant("b")),16). 
+occurs(("pickup",constant("g")),17). 
+occurs(("stack",constant("g"),constant("d")),18). 
+occurs(("pickup",constant("a")),19). 
+occurs(("stack",constant("a"),constant("g")),20). 
+
+
+ 
+
+
+
+ d
+ b
+ f    
+ g   a   e   h   c 
+
+
+                             d
+ b
+ f    
+ g   a   e   h   c 
+
+occurs(("stack",constant("d"),constant("h")),2).
+
+                             
+ b
+ f              d
+ g   a   e   h   c 
+
+=================
+
+ t(variable(("clear",constant("e")))) 
+ t(variable(("ontable",constant("e")))) 
+ 
+ t(variable(("on",constant("g"),constant("b")))) 
+ t(variable(("on",constant("b"),constant("a")))) 
+ t(variable(("on",constant("a"),constant("f")))) 
+ t(variable(("on",constant("f"),constant("c")))) 
+ t(variable(("on",constant("c"),constant("d"))))
+ t(variable(("ontable",constant("d")))) 
+ 
+ 
+
+
