@@ -4,29 +4,74 @@
   
 h(X, 1) :- initialState(X, value(X, true)).
 
-{new_action(A)} :- rh_action(A).
+% condition for the robot plans 
 
-action(action(A)) :- new_action(A).
+contradictory(true, false).
+contradictory(false, true).
 
-g_precondition(A,B,C):- new_precondition(A,B,C).
-g_postcondition(A,B,C,D):- new_postcondition(A,B,C,D).
+%% action can be added if it occurs in the robot plan and is not in the set of actions in the human domain 
 
-g_precondition(A,B,value(X,true)):- precondition(A,B,value(X,true)), not new_precondition(A,B,value(X,false)).
-g_precondition(A,B,value(X,false)):- precondition(A,B,value(X,false)), not new_precondition(A,B,value(X,true)).
+{add(action(A))} :- robot(occurs(A,_)), not human(action(A)).
+action(action(A)) :- add(action(A)). 
 
-g_postcondition(A,B,C,value(X,true)):- postcondition(A,B,C,value(X,true)), not new_postcondition(A,B,C,value(X,false)).
-g_postcondition(A,B,C,value(X,false)):- postcondition(A,B,C,value(X,false)), not new_postcondition(A,B,C,value(X,true)).
+%% false actions could be removed if necessary 
+
+{remove(action(A))} :- human(action(A)), not robot(action(A)).
+
+%% postconditions are added if they are necessary for the optimal plan 
+  
+{add(postcondition(action(A), B, X, value(X, BoolV)))} :- robot(postcondition(action(A), B, X, value(X, BoolV))), 
+		robot(occurs(A,_)),  
+		not human(postcondition(action(A), B, X, value(X, BoolV))).	
+
+%% preconditions are added if they are necessary for the optimal plan 
+		
+{add(precondition(action(A), X, value(X, BoolV)))} :- robot(precondition(action(A), X, value(X, BoolV))), 
+		robot(occurs(A,_)),
+		contradictory(BoolV, NBoolV),
+		not human(precondition(action(A), X, value(X, NBoolV))).	 
+
+%% postconditions are removed if they are contradictory with what the robot believes 
+
+{remove(postcondition(action(A), B, X, value(X, BoolV)))} :- 
+		human(postcondition(action(A), B, X, value(X, BoolV))), 
+		contradictory(BoolV, NBoolV),
+		robot(postcondition(action(A), B, X, value(X, NBoolV))). 
+		
+%% preconditions are removed if they are contradictory with what the robot believes 
+
+{remove(precondition(action(A), X, value(X, BoolV)))} :- 
+		human(precondition(action(A), X, value(X, BoolV))), 
+		contradictory(BoolV, NBoolV),
+		robot(precondition(action(A), X, value(X, NBoolV))). 
+
+%% actions 
+		
+true(action(A)) :- action(action(A)), not remove(action(A)).
+
+true(postcondition(action(A), B, C, D)) :- add(postcondition(action(A), B, C, D)). 
+true(postcondition(action(A), B, X, value(X, BoolV))) :- human(postcondition(action(A), B, X, value(X, BoolV))), 
+		contradictory(BoolV, NBoolV),
+		not add(postcondition(action(A), B, X, value(X, NBoolV))), 
+		not remove(postcondition(action(A), B, X, value(X, BoolV))). 
+
+true(precondition(action(A), C, D)) :- add(precondition(action(A), C, D)). 
+true(precondition(action(A), X, value(X, BoolV))) :- human(precondition(action(A), X, value(X, BoolV))), 
+		contradictory(BoolV, NBoolV),
+		not add(precondition(action(A), X, value(X, NBoolV))), 
+		not remove(precondition(action(A), X, value(X, BoolV))). 
+
 
 #program step(t).
 
 time(t). 
 
 h(X, t) :- action(action(A)), occurs(A, t-1), 
-                   g_postcondition(action(A), effect(unconditional), X, value(X, true)).
+                   true(postcondition(action(A), effect(unconditional), X, value(X, true))).
                    
 h(X, t) :- action(action(A)), occurs(A, t-1), 
                    h(X, t-1), 
-                   not g_postcondition(action(A), effect(unconditional), X, value(X, false)).                  
+                   not true(postcondition(action(A), effect(unconditional), X, value(X, false))).                  
 
 executable(A, t):-  action(action(A)), 
                     #count {1,X : g_precondition(action(A), X, value(X, true)), not h(X, t)} == 0. 
@@ -34,8 +79,6 @@ executable(A, t):-  action(action(A)),
 :- action(action(A)), occurs(A, t), not executable(A, t). 
 
 1{occurs(A, t) : action(action(A))} 1 :- goal(X, value(X, true)), not h(X, t).
-
-
 
 #program check(t).
 

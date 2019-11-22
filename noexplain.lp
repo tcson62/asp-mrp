@@ -5,35 +5,6 @@ h(X, 1) :- initialState(X, value(X, true)).
 
 % condition for the robot plans 
 
-%%%new_postcondition(A, B, C, D) :- rh_postcondition(A, B, C, D). 
-%%%new_precondition(A, B, C) :- rh_precondition(A, B, C). 
-%
-
- action(action(A)) :- new_action(A). 
- 
- {new_postcondition(A, B, C, D)} :- rh_postcondition(A, B, C, D). 
- {new_precondition(A, B, C)} :-  rh_precondition(A, B, C). 
-{new_action(A)} :-  rh_action(A). 
-
-new_postcondition(action(A), B, C, D) :-  new_action(A), rh_postcondition(action(A), B, C, D).  
-new_precondition(action(A), B, C) :-  new_action(A), rh_precondition(action(A), B, C). 
-
-% condition for the human plans 
- 
-% {false_postcondition(A, B, C, D)} :- p_postcondition(A, B, C, D), rh_postcondition(A, B, C, D). 
-% {false_precondition(A, B, C)} :- p_precondition(A, B, C), rh_precondition(A, B, C). 
-
-old_postcondition(action(A), B, X, value(X, true)):-  postcondition(action(A), B, X, value(X, true)),
-		  not new_postcondition(action(A), effect(unconditional), X, value(X, false)).
-
-old_postcondition(action(A), B, X, value(X, false)):-  postcondition(action(A), B, X, value(X, false)),
-		  not new_postcondition(action(A), effect(unconditional), X, value(X, true)).
-
-old_precondition(action(A), X, value(X, true)):-  precondition(action(A), X, value(X, true)),
-		  not new_precondition(action(A),  X, value(X, false)).
-
-old_precondition(action(A), X, value(X, false)):-  precondition(action(A), X, value(X, false)),
-		  not new_precondition(action(A),  X, value(X, true)).
 
 h(X, T+1)  :- preTime(T),  action(action(A)), occurs(A, T), 
                    new_postcondition(action(A), effect(unconditional), X, value(X, true)).

@@ -13,7 +13,7 @@ contradictory(false, true).
 {add(action(A))} :- robot(occurs(A,_)), not human(action(A)).
 action(action(A)) :- add(action(A)). 
 
-%% false actions could be removed if neccessary 
+%% false actions could be removed if necessary 
 
 {remove(action(A))} :- human(action(A)), not robot(action(A)).
 
