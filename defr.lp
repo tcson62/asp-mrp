@@ -1,5 +1,6 @@
 #show. 
-#show r_precondition(A,B,C)    : precondition(A,B,C).
-#show r_postcondition(A,B,C,D) : postcondition(A,B,C,D). 
-#show r_action(A) : action(action(A)).
-
+#show robot(precondition(A,B,C))    : precondition(A,B,C).
+#show robot(postcondition(A,B,C,D)) : postcondition(A,B,C,D). 
+#show robot(action(A)) : action(action(A)).
+#show robot(initialState(X,V)) : initialState(X,V).
+#show robot(variable(V)) : variable(V). 
