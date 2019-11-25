@@ -28,8 +28,8 @@ action(action(noop)).
 		
 {add(precondition(action(A), X, value(X, BoolV)))} :- robot(precondition(action(A), X, value(X, BoolV))), 
 		robot(occurs(A,_)),
-		contradictory(BoolV, NBoolV),
-		not human(precondition(action(A), X, value(X, NBoolV))).	 
+%		contradictory(BoolV, NBoolV),
+		not human(precondition(action(A), X, value(X, BoolV))).	 
 
 %% postconditions are removed if they are contradictory with what the robot believes 
 
@@ -75,10 +75,24 @@ executable(A, T):-  time(T), action(action(A)),
 
 1{occurs(A, T) : action(action(A))} 1 :- time(T), maxTime(M), T<M, goal(X, value(X, true)), not h(X, T).
 
-:- time(T), maxTime(M), T<M, goal(X, value(X, true)), not h(X, T), occurs(noop, T).
-
 occurs(noop, T+1) :- time(T),  maxTime(M), T<M, occurs(noop, T).
 
 :- maxTime(N), goal(X, value(X, true)), not h(X, N).
+
+occurs(noop, 10).
+
+%%%  :- time(T), maxTime(M), T<M, goal(X, value(X, true)), not h(X, T), occurs(noop, T).
+
+%%%% occurs(noop,6).
+%%%
+%%%noopCount(NOP) :- NOP = #count {1,T : occurs(noop, T)}.   
+%%%  
+%%%#maximize {NOP : noopCount(NOP)}. 
   
 #show occurs/2.  
+
+%%%#show time/1.
+%%%#show maxTime/1. 
+
+%%% #show exec(A) : executable(A,1).
+%%% #show noopCount/1. 

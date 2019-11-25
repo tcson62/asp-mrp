@@ -27,8 +27,8 @@ action(action(A)) :- add(action(A)).
 		
 {add(precondition(action(A), X, value(X, BoolV)))} :- robot(precondition(action(A), X, value(X, BoolV))), 
 		robot(occurs(A,_)),
-		contradictory(BoolV, NBoolV),
-		not human(precondition(action(A), X, value(X, NBoolV))).	 
+%		contradictory(BoolV, NBoolV),
+		not human(precondition(action(A), X, value(X, BoolV))).	 
 
 %% postconditions are removed if they are contradictory with what the robot believes 
 

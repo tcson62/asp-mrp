@@ -9,7 +9,7 @@ from clingo import *
 global debug  
 
 def all_model(m) :
-    print (m)   
+    print ("Answer: {}".format(m))   
 
 
 def main(prg):
@@ -19,7 +19,7 @@ def main(prg):
 
     start_time = datetime.datetime.now()  
 
-    prg.ground([(["base"],[])])
+    prg.ground([("base",[])])
    
     prg.solve(None, on_model=all_model)
     
