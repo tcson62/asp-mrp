@@ -69,11 +69,16 @@ h(X, T+1) :- time(T), action(action(A)), occurs(A, T),
                    not true(postcondition(action(A), effect(unconditional), X, value(X, false))).                  
 
 executable(A, T):-  time(T), action(action(A)), 
-                    #count {1,X : g_precondition(action(A), X, value(X, true)), not h(X, T)} == 0. 
+                    #count {1,X : true(precondition(action(A), X, value(X, true))), not h(X, T)} == 0. 
 
 :- time(T), action(action(A)), occurs(A, T), not executable(A, T). 
 
-1{occurs(A, T) : action(action(A))} 1 :- time(T), goal(X, value(X, true)), not h(X, T).
+1{occurs(A, T) : action(action(A))} 1 :- time(T), maxTime(M), T<M, goal(X, value(X, true)), not h(X, T).
+
+:- time(T), maxTime(M), T<M, goal(X, value(X, true)), not h(X, T), occurs(noop, T).
+
+occurs(noop, T+1) :- time(T),  maxTime(M), T<M, occurs(noop, T).
 
 :- maxTime(N), goal(X, value(X, true)), not h(X, N).
   
+#show occurs/2.  
