@@ -1,3 +1,5 @@
+#program base. 
+
 %%%
 %%% 
 
@@ -73,22 +75,14 @@ executable(A, T):-  time(T), action(action(A)),
 
 :- time(T), action(action(A)), occurs(A, T), not executable(A, T). 
 
-1{occurs(A, T) : action(action(A))} 1 :- time(T), maxTime(M), T<M, goal(X, value(X, true)), not h(X, T).
-
+1{occurs(A, T) : action(action(A))} 1 :- time(T), maxTime(M), T<M. 
+ 
 occurs(noop, T+1) :- time(T),  maxTime(M), T<M, occurs(noop, T).
 
 :- maxTime(N), goal(X, value(X, true)), not h(X, N).
 
-occurs(noop, 10).
-
-%%%  :- time(T), maxTime(M), T<M, goal(X, value(X, true)), not h(X, T), occurs(noop, T).
-
-%%%% occurs(noop,6).
-%%%
-%%%noopCount(NOP) :- NOP = #count {1,T : occurs(noop, T)}.   
-%%%  
-%%%#maximize {NOP : noopCount(NOP)}. 
-  
+#heuristic occurs(noop, T) : time(T).     [10, level] 
+ 
 #show occurs/2.  
 
 %%%#show time/1.
