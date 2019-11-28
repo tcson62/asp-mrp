@@ -82,11 +82,11 @@ occurs(noop, T+1) :- time(T),  maxTime(M), T<M, occurs(noop, T).
 :- maxTime(N), goal(X, value(X, true)), not h(X, N).
 
 #heuristic occurs(noop, T) : time(T).     [10, level] 
+#heuristic occurs(noop, T) : time(T).     [10, true] 
  
 #show occurs/2.  
-
-%%%#show time/1.
-%%%#show maxTime/1. 
-
+#show time/1.
+#show maxTime/1. 
+ 
 %%% #show exec(A) : executable(A,1).
 %%% #show noopCount/1. 
