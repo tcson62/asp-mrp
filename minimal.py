@@ -6,9 +6,10 @@ import sys
 import clingo 
 
 global debug                   
-global curr_as            # current answer set 
-global minLength       # minimal plan length 
-global curr_plan         # current plan 
+global curr_as                 # current answer set 
+global minLength            # minimal plan length 
+global curr_plan              # current plan 
+global needToContinue   # true indicates that the plan length in human problem is shorter than in robot problem  
 
 def all_model(m) :
     global curr_as 
@@ -23,8 +24,10 @@ def all_model(m) :
     
     for x in range(0, len(curr_as)) : 
         if (curr_as[x].match("occurs",2)) :
-             print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments)     
+             # print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments)     
              curr_plan.append(curr_as[x])
+
+    if (debug) :  print (curr_plan)
 
 
 def computeMax(m):
@@ -37,15 +40,31 @@ def computeMax(m):
              print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments)     
              minLength = curr_as[x].arguments[0]  
 
+def checkNotMinimal(plan, maxTime):
+    # if plan contains occurs(noop, x) for x < maxTime then it is not optimal 
+    # symbol = clingo.parse_term('noop') 
+    for x in range(0, len(plan)) : 
+        if (plan[x].arguments[0].match("noop",0) and plan[x].arguments[1] < maxTime): 
+             return True
+    return False      
+
+def addToProgram(plan, maxTime):
+    # add to the current program all action occurrences of the 
+    for x in range(0, len(plan)) : 
+        if (not plan[x].arguments[0].match("noop",0)): 
+             print ("addoccurrence("+plan[x] +").") 
+ 
 
 def main(prg):
     global debug 
     global curr_as
     global minLength 
-    global curr_plan 
+    global curr_plan
+    global needToContinue  
     
     debug = True 
     curr_plan = []
+    needToContinue = True 
 
     start_time = datetime.datetime.now()  
     
@@ -53,27 +72,35 @@ def main(prg):
     
     prg.solve(None, on_model=computeMax)
 
-    print ("Minimal plan length: {}".format(minLength)) 
+    print ("Minimal robot plan length: {}".format(minLength)) 
 
     prg.ground([("base",[])])
     
-    if (debug) :  print(prg.configuration.solver.heuristic, "")
+    if (debug) :  
+        print(prg.configuration.solver.heuristic, "")
     
     prg.configuration.solver.heuristic="Domain"
 
-    if (debug) :  print(prg.configuration.solver.heuristic, "")
+    if (debug) :  
+        print(prg.configuration.solver.heuristic, "")
+        print ("Signature: {} ".format( prg.symbolic_atoms.signatures))
      
     # Need to do 
     #     get all the actions  
     #     check for noop 
     #     if noop does not exist then done 
     #     else change the programs  
-      
-    prg.solve(None, on_model=all_model)
     
-    if (debug) : print ("Signature: {} ".format( prg.symbolic_atoms.signatures))
+    while needToContinue: 
+        prg.solve(None, on_model=all_model)
+        if (checkNotMinimal(curr_plan, minLength)): 
+             if (debug) : 
+                  print ("Need to continue ===============")
+                  print ("Current plan : {}".format(curr_plan))    
+             addToProgram(curr_plan, minLength)
+        break   
     
-    print ("Current plan :".format(curr_plan))    
+    
      
     end_time = datetime.datetime.now()
     
