@@ -42,17 +42,24 @@ def computeMax(m):
 
 def checkNotMinimal(plan, maxTime):
     # if plan contains occurs(noop, x) for x < maxTime then it is not optimal 
-    # symbol = clingo.parse_term('noop') 
-    for x in range(0, len(plan)) : 
-        if (plan[x].arguments[0].match("noop",0) and plan[x].arguments[1] < maxTime): 
-             return True
+    
+    symbol = clingo.Function("occurs", ["noop",maxTime])
+    
+    if (symbol in plan) :
+        if (debug) : print (">>>>>> True >>>>>")  
+        return True 
+    
+    # print ("..................", symbol)
+    # for x in range(0, len(plan)) : 
+    #    if (plan[x].arguments[0].match("noop",0) and plan[x].arguments[1] < maxTime): 
+    #         return True
     return False      
 
 def addToProgram(plan, maxTime):
     # add to the current program all action occurrences of the 
     for x in range(0, len(plan)) : 
         if (not plan[x].arguments[0].match("noop",0)): 
-             print ("addoccurrence("+plan[x] +").") 
+             print ("human(",plan[x] ,').') 
  
 
 def main(prg):
@@ -93,7 +100,9 @@ def main(prg):
     
     while needToContinue: 
         prg.solve(None, on_model=all_model)
-        if (checkNotMinimal(curr_plan, minLength)): 
+        needToContinue = checkNotMinimal(curr_plan, minLength)
+
+        if (needToContinue): 
              if (debug) : 
                   print ("Need to continue ===============")
                   print ("Current plan : {}".format(curr_plan))    
