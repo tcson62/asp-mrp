@@ -2,6 +2,10 @@
 
 %%%
 %%% 
+%%% #external start_noop/1. 
+
+#external start(X) : time(X).
+#external human_occurs(A) : action(A). 
 
 h(X, 1) :- initialState(X, value(X, true)).
 
@@ -10,41 +14,41 @@ h(X, 1) :- initialState(X, value(X, true)).
 contradictory(true, false).
 contradictory(false, true).
 
-human( occurs(("stack",constant("f"),constant("e")),1) ).
-human( occurs(("stack",constant("c"),constant("f")),2) ).
-human( occurs(("stack",constant("b"),constant("c")),3) ).
-human( occurs(("stack",constant("d"),constant("b")),4) ).
-human( occurs(("stack",constant("g"),constant("d")),5) ).
-human( occurs(("stack",constant("a"),constant("g")),6) ).
-
-human( occurs(("stack",constant("g"),constant("e")),1) ).
-human( occurs(("unstack",constant("g"),constant("b")),2) ).
-human( occurs(("putdown",constant("g")),3) ).
-human( occurs(("unstack",constant("b"),constant("a")),4) ).
-human( occurs(("putdown",constant("b")),5) ).
-human( occurs(("unstack",constant("a"),constant("f")),6) ).
-human( occurs(("stack",constant("a"),constant("g")),7) ).
-human( occurs(("stack",constant("e"),constant("b")),8) ).
-human( occurs(("unstack",constant("f"),constant("g")),9) ).
-human( occurs(("stack",constant("c"),constant("a")),10) ).
-human( occurs(("stack",constant("f"),constant("e")),11) ).
-human( occurs(("unstack",constant("c"),constant("d")),12) ).
-human( occurs(("stack",constant("c"),constant("f")),13) ).
-human( occurs(("pickup",constant("g")),14) ).
-human( occurs(("stack",constant("g"),constant("d")),15) ).
-human( occurs(("pickup",constant("b")),16) ).
-human( occurs(("stack",constant("b"),constant("c")),17) ).
-human( occurs(("pickup",constant("d")),18) ).
-human( occurs(("stack",constant("d"),constant("b")),19) ).
+%human( occurs(("stack",constant("f"),constant("e")),1) ).
+%human( occurs(("stack",constant("c"),constant("f")),2) ).
+%human( occurs(("stack",constant("b"),constant("c")),3) ).
+%human( occurs(("stack",constant("d"),constant("b")),4) ).
+%human( occurs(("stack",constant("g"),constant("d")),5) ).
+%human( occurs(("stack",constant("a"),constant("g")),6) ).
+%
+%human( occurs(("stack",constant("g"),constant("e")),1) ).
+%human( occurs(("unstack",constant("g"),constant("b")),2) ).
+%human( occurs(("putdown",constant("g")),3) ).
+%human( occurs(("unstack",constant("b"),constant("a")),4) ).
+%human( occurs(("putdown",constant("b")),5) ).
+%human( occurs(("unstack",constant("a"),constant("f")),6) ).
+%human( occurs(("stack",constant("a"),constant("g")),7) ).
+%human( occurs(("stack",constant("e"),constant("b")),8) ).
+%human( occurs(("unstack",constant("f"),constant("g")),9) ).
+%human( occurs(("stack",constant("c"),constant("a")),10) ).
+%human( occurs(("stack",constant("f"),constant("e")),11) ).
+%human( occurs(("unstack",constant("c"),constant("d")),12) ).
+%human( occurs(("stack",constant("c"),constant("f")),13) ).
+%human( occurs(("pickup",constant("g")),14) ).
+%human( occurs(("stack",constant("g"),constant("d")),15) ).
+%human( occurs(("pickup",constant("b")),16) ).
+%human( occurs(("stack",constant("b"),constant("c")),17) ).
+%human( occurs(("pickup",constant("d")),18) ).
+%human( occurs(("stack",constant("d"),constant("b")),19) ).
 
 
 add(postcondition(action(A), B, X, value(X, BoolV))) :- 
-		human(occurs(A,_)),
+		human_occurs(A),
 		robot(postcondition(action(A), B, X, value(X, BoolV))), 
 		not human(postcondition(action(A), B, X, value(X, BoolV))).	
 
 add(precondition(action(A), X, value(X, BoolV))) :- 
-		human(occurs(A,_)),
+		human_occurs(A),
 		robot(precondition(action(A), X, value(X, BoolV))), 
 		not human(precondition(action(A), X, value(X, BoolV))).	
 
@@ -122,14 +126,17 @@ occurs("noop", T+1) :- time(T),  maxTime(M), T<M, occurs("noop", T).
 
 :- maxTime(N), goal(X, value(X, true)), not h(X, N).
 
-#heuristic occurs("noop", T-1) : maxTime(T).     [10, level] 
-#heuristic occurs("noop", T-1) : maxTime(T).     [10, true] 
+occurs("noop", T) :- start(T).
+
+%%#heuristic occurs("noop", T-1) : maxTime(T).     [10, level] 
+%%#heuristic occurs("noop", T-1) : maxTime(T).     [10, true] 
 
 %%%#heuristic occurs("noop", T) : time(T).     [10, level] 
 %%%#heuristic occurs("noop", T) : time(T).     [10, true] 
 
  
-#show occurs/2.  
+%#show human(occurs(A)) : occurs(A, _).  
+#show occurs/2. 
 #show time/1.
 #show maxTime/1. 
  
