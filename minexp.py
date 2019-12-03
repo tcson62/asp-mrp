@@ -25,7 +25,7 @@ def all_model(m) :
     curr_plan = []
     
     for x in range(0, len(curr_as)) : 
-        if (curr_as[x].match("human_occurs",1)) :
+        if (curr_as[x].match("occurs",2)) :
              print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments)     
              curr_plan.append(curr_as[x])
 
@@ -111,24 +111,58 @@ def main(prg):
     #         addToProgram(curr_plan, minLength)
     #    break   
     
-    numberLoops = minLength.number
     
-    for id in range(1, numberLoops) :
-          symbol = clingo.Function("start", [id])
-          prg.assign_external(symbol, True) 
-          ret = prg.solve(None, on_model=all_model) 
-          print ("Result [", id, "]:", ret)
-          if (ret.unsatisfiable) :
-                 print ("No plan  ===============  ", id)
-          if (id < numberLoops -1 and not ret.unsatisfiable) :
-                 print ("Need modification  =============== ", id)
-                 # addToProgram(prg, curr_plan, minLength)
-                 for x in range(0, len(curr_plan)) : 
-                      act = clingo.Function("human_occurs", [plan[x].arguments[0]]) 
-                      print (">>> checked >>>> ", act)
-                      prg.assign_external(act, True)   
+        
+#    while True :  
+#          symbol = clingo.Function("start", [minLength.number-1])
+#          print ("Starting ... ", symbol) 
+#          prg.assign_external(symbol, True) 
+#          ret = prg.solve(None, on_model=all_model) 
+#          # print ("Result [", id, "]:", ret)
+#          if (ret.unsatisfiable) :
+#                 # print ("No plan  ===============  ", id)
+#                 print ("No plan  ===============  ")
+#                 break 
+#          if (not ret.unsatisfiable) :
+#                 # print ("Need modification  =============== ", id)
+#                 print ("Need modification  =============== ")
+#                 # addToProgram(prg, curr_plan, minLength)
+#                 for x in range(0, len(curr_plan)) : 
+#                      print (x, ':', curr_plan[x], ' --- ', curr_plan[x].arguments)     
+#                      if (curr_plan[x].arguments[0].string ==  "noop") :
+#                             print ("<<< added now >>>>", curr_plan[x].arguments)     
+#                      else :
+#                             act = clingo.Function("human_occurs", [curr_plan[x].arguments[0]]) 
+#                             print (">>> checked >>>> ", act)
+#                             prg.assign_external(act, True)   
+#
+#          prg.assign_external(symbol, False) 
 
-          prg.assign_external(symbol, False) 
+
+    for id in range(1, minLength.number) :   
+           symbol = clingo.Function("start", [id])
+           print ("Starting ... ", symbol) 
+           prg.assign_external(symbol, True) 
+           ret = prg.solve(None, on_model=all_model) 
+           print ("Result [", id, "]:", ret)
+           if (ret.unsatisfiable) :
+                  print ("No plan  ===============  ", id)
+                  # print ("No plan  ===============  ")
+                   
+           if (not ret.unsatisfiable) :
+                  print ("Need modification  =============== ", id)
+                  
+                  for x in range(0, len(curr_plan)) : 
+                       print (x, ':', curr_plan[x], ' --- ', curr_plan[x].arguments)     
+                       if (curr_plan[x].arguments[0].string ==  "noop") :
+                              print ("<<< added now >>>>", curr_plan[x].arguments)     
+                       else :
+                              act = clingo.Function("human_occurs", [curr_plan[x].arguments[0]]) 
+                              print (">>> checked >>>> ", act)
+                              prg.assign_external(act, True)   
+ 
+           prg.assign_external(symbol, False) 
+
   
     
      

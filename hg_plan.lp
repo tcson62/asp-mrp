@@ -5,7 +5,7 @@
 %%% #external start_noop/1. 
 
 #external start(X) : time(X).
-#external human_occurs(A) : action(A). 
+#external human_occurs(A) : action(action(A)). 
 
 h(X, 1) :- initialState(X, value(X, true)).
 

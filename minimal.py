@@ -48,11 +48,7 @@ def checkNotMinimal(plan, maxTime):
     if (symbol in plan) :
         if (debug) : print (">>>>>> True >>>>>")  
         return True 
-    
-    # print ("..................", symbol)
-    # for x in range(0, len(plan)) : 
-    #    if (plan[x].arguments[0].match("noop",0) and plan[x].arguments[1] < maxTime): 
-    #         return True
+
     return False      
 
 def addToProgram(plan, maxTime):
@@ -108,8 +104,7 @@ def main(prg):
                   print ("Current plan : {}".format(curr_plan))    
              addToProgram(curr_plan, minLength)
         break   
-    
-    
+      
      
     end_time = datetime.datetime.now()
     
