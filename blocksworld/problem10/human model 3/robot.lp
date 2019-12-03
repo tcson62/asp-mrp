@@ -1,3 +1,5 @@
+% #program base. 
+
 %---------------------------------------
 % domain
 %---------------------------------------
@@ -5,6 +7,8 @@
 % utils
 boolean(true).
 boolean(false).
+
+action(action(noop)).
 
 % types
 type(type("block")).
@@ -102,3 +106,7 @@ goal(variable(("on", constant("d"), constant("b"))), value(variable(("on", const
 goal(variable(("on", constant("b"), constant("c"))), value(variable(("on", constant("b"), constant("c"))), true)).
 goal(variable(("on", constant("c"), constant("f"))), value(variable(("on", constant("c"), constant("f"))), true)).
 goal(variable(("on", constant("f"), constant("e"))), value(variable(("on", constant("f"), constant("e"))), true)).
+
+#show. 
+#show act(A) : action(action(A)). 
+% #show add/1.
