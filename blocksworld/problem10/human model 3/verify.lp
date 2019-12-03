@@ -2,6 +2,8 @@
 
 #program base.
 
+%%% #external name(A,_) : action(action(A)). 
+
 h(X, 1) :- initialState(X, value(X, true)).
 
 % condition for the robot plans 
@@ -72,8 +74,6 @@ remove(precondition(action(A), X, value(X, BoolV))) :-
 		robot(precondition(action(A), X, value(X, NBoolV))). 
 
 %% actions 
-
-%% in_use(A) :- action(action(A)), addoccurrence(occurs(A,_)).
 		
 true(action(A)) :- action(action(A)), not remove(action(A)).
 
