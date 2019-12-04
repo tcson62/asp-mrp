@@ -1,8 +1,13 @@
-#include <incmode>.
+%%%#include <incmode>.
+%%%#include "h.lp".
+%%%#include "human.lp".
 
 #program base.
 
-%%% #external name(A,_) : action(action(A)). 
+%#show occurs/2. 
+%#show add/1.
+
+considered(Act) :- robot(occurs(A, T)), name(A, Act). 
 
 h(X, 1) :- initialState(X, value(X, true)).
 
@@ -108,11 +113,11 @@ executable(A, t):-  action(action(A)),
 1{occurs(A, t) : action(action(A))} 1 :- goal(X, value(X, true)), not h(X, t).
 
 #program check(t).
+#external query(t). 
 
 :- query(t), goal(X, value(X, true)), not h(X, t).
 
- 
-%#show human(occurs(A)) : occurs(A, _).  
+#show.
 #show occurs/2. 
 #show time/1.
 #show maxTime/1. 

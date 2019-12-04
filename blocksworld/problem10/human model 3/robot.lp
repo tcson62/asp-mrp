@@ -8,8 +8,6 @@
 boolean(true).
 boolean(false).
 
-action(action(noop)).
-
 % types
 type(type("block")).
 

@@ -5,6 +5,6 @@ robot(occurs(("unstack",constant("e"),constant("g")),1)).
 robot(occurs(("putdown",constant("e")),2)). 
 robot(occurs(("unstack",constant("g"),constant("b")),3)). robot(occurs(("putdown",constant("g")),4)). robot(occurs(("unstack",constant("b"),constant("a")),5)). robot(occurs(("putdown",constant("b")),6)). robot(occurs(("unstack",constant("a"),constant("f")),7)). robot(occurs(("putdown",constant("a")),8)). robot(occurs(("unstack",constant("f"),constant("c")),9)). robot(occurs(("stack",constant("f"),constant("e")),10)). robot(occurs(("unstack",constant("c"),constant("d")),11)). robot(occurs(("stack",constant("c"),constant("f")),12)). robot(occurs(("pickup",constant("b")),13)). robot(occurs(("stack",constant("b"),constant("c")),14)). robot(occurs(("pickup",constant("d")),15)). robot(occurs(("stack",constant("d"),constant("b")),16)). robot(occurs(("pickup",constant("g")),17)). robot(occurs(("stack",constant("g"),constant("d")),18)). robot(occurs(("pickup",constant("a")),19)). robot(occurs(("stack",constant("a"),constant("g")),20)). 
 
-considered(Act) :- robot(occurs(A, T)), name(A, Act). 
 
-#show considered/1. 
+
+ 
