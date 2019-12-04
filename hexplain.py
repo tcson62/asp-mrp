@@ -104,16 +104,16 @@ def main(prg):
     t = 1 
     print ("Max Step .... ", minLength.number) 
 
-    while (t < minLength.number): 
+    while (t < minLength.number+1): 
             prg.ground([("step",[t])])
             act = clingo.Function("query", [t]) 
             print ("Step .... ", t, " >>> ", act) 
             prg.ground([("step",[t])])        
-            prg.ground([("check",[t])])
-            
+            prg.ground([("check",[t])])            
             prg.assign_external(act, True)      
             ret = prg.solve(None, on_model=steps)  
-            # if (not ret.unsatisfiable) : break 
+            if (ret.satisfiable) :  
+                  print ("Need modification  =============== ")               
             prg.assign_external(act, False)  
             t = t+1 
     	
