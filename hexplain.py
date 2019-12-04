@@ -10,9 +10,9 @@ global curr_as                 # current answer set
 global minLength            # minimal plan length 
 global curr_plan              # current plan 
 global nameStr  
+global extraAction 
 actionList = [] 
 actionListName = [] 
-
 
 def actionsList(m) :
     curr_as = m.symbols(atoms=True)
@@ -41,15 +41,22 @@ def steps(m) :
     global curr_as 
     global debug 
     global curr_plan
+    global extraAction
     
     if (debug) : print ("Answer: {}".format(m))     
     curr_as = m.symbols(shown=True)
     
     for x in range(0, len(curr_as)) :  
              if (curr_as[x].match("occurs", 2)) : 
-                  print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments, '----', len(curr_as[x].arguments))     
-                  # [(B)] = curr_as[x].arguments
-                  # actionList.append(B)  
+                  (y) =  curr_as[x].arguments[0] 
+                  print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments, ' === ', y, ' +++ ', y.arguments) 
+                  elem = clingo.Function("considered",[y.arguments[0]]) 
+                  if (not (elem in extraAction)) : extraAction.append(elem)
+             
+             if (curr_as[x].match("considered",1)) :
+                  print (x, ':', curr_as[x], ' <<< ', curr_as[x].arguments)   
+                  if (not (curr_as[x] in extraAction)) : extraAction.append(curr_as[x])
+ 
 
 
 def getPlan(): 
@@ -80,10 +87,12 @@ def main(prg):
     global minLength 
     global curr_plan
     global nameStr  
+    global extraAction
     
     debug = False 
     curr_plan = []
     nameStr = ''
+    extraAction = [] 
     
     start_time = datetime.datetime.now()  
     
@@ -118,40 +127,19 @@ def main(prg):
             prg.ground([("check",[t])])            
             prg.assign_external(act, True)      
             ret = prg.solve(None, on_model=steps)  
-            if (ret.satisfiable) :  
-                  print ("Need modification  =============== ")               
+            if (ret.satisfiable) : 
+                 if (t == minLength.number) :  
+                     print ("Minimal plan has the same length as robot plan. Done!\nThe following actions have been modified to match with the robot's specification.") 
+                 else :                   
+                     print ("Need modification  =============== ") 
+                     
+          
             prg.assign_external(act, False)  
             t = t+1 
-    	
-        
-#    while True :  
-#          symbol = clingo.Function("start", [minLength.number-1])
-#          print ("Starting ... ", symbol) 
-#          prg.assign_external(symbol, True) 
-#          ret = prg.solve(None, on_model=all_model) 
-#          # print ("Result [", id, "]:", ret)
-#          if (ret.unsatisfiable) :
-#                 # print ("No plan  ===============  ", id)
-#                 print ("No plan  ===============  of length < ", minLength)
-#                 break 
-#          if (not ret.unsatisfiable) :
-#                 # print ("Need modification  =============== ", id)
-#                 print ("Need modification  =============== ")
-#                 # addToProgram(prg, curr_plan, minLength)
-#                 for x in range(0, len(curr_plan)) : 
-#                      print (x, ':', curr_plan[x], ' --- ', curr_plan[x].arguments)     
-#                      if (curr_plan[x].arguments[0].string ==  "noop") :
-#                             print ("<<< added now >>>>", curr_plan[x].arguments)     
-#                      else :
-#                             act = clingo.Function("human_occurs", [curr_plan[x].arguments[0]]) 
-#                             print (">>> checked >>>> ", act)
-#                             prg.assign_external(act, True)   
-#
-#          prg.assign_external(symbol, False) 
-
-   
     
      
+    print (extraAction)	
+             
     end_time = datetime.datetime.now()
     
     elapsed = end_time - start_time

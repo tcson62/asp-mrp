@@ -4,9 +4,6 @@
 
 #program base.
 
-%#show occurs/2. 
-%#show add/1.
-
 #external considered(A) : robot(action(A)). 
 
 considered(Act) :- robot(occurs(A, T)), name(A, Act). 
