@@ -7,6 +7,8 @@
 %#show occurs/2. 
 %#show add/1.
 
+#external considered(A) : robot(action(A)). 
+
 considered(Act) :- robot(occurs(A, T)), name(A, Act). 
 
 h(X, 1) :- initialState(X, value(X, true)).
@@ -20,13 +22,13 @@ add(postcondition(action(A), B, X, value(X, BoolV))):-
 		considered(NA), 
 		action(action(A)), 
 		name(A,NA), 
-		postcondition(action(A), B, X, value(X, BoolV)).
+		robot(postcondition(action(A), B, X, value(X, BoolV))).
 
 add(precondition(action(A), X, value(X, BoolV))):- 
 		considered(NA), 
 		action(action(A)), 
 		name(A,NA), 
-		precondition(action(A), X, value(X, BoolV)).
+		robot(precondition(action(A), X, value(X, BoolV))).
 		
 add(postcondition(action(A), B, X, value(X, BoolV))) :- 
 		human_occurs(A),
@@ -121,6 +123,7 @@ executable(A, t):-  action(action(A)),
 #show occurs/2. 
 #show time/1.
 #show maxTime/1. 
+#show considered/1. 
  
 %%% #show exec(A) : executable(A,1).
 %%% #show noopCount/1. 

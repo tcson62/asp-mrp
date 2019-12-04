@@ -44,7 +44,13 @@ def steps(m) :
     
     if (debug) : print ("Answer: {}".format(m))     
     curr_as = m.symbols(shown=True)
-    if (debug) :  print ("List of shown elements: {}".format(curr_as))   
+    
+    for x in range(0, len(curr_as)) :  
+             if (curr_as[x].match("occurs", 2)) : 
+                  print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments, '----', len(curr_as[x].arguments))     
+                  # [(B)] = curr_as[x].arguments
+                  # actionList.append(B)  
+
 
 def getPlan(): 
     
