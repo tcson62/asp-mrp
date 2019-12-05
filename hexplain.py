@@ -75,7 +75,7 @@ def main(prg):
     global nameStr  
     global extraAction
     
-    debug = False
+    debug = True
     nameStr = ''
     extraAction = [] 
     
