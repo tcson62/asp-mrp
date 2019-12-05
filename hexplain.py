@@ -9,7 +9,6 @@ import os
 global debug                   
 global curr_as                 # current answer set 
 global minLength            # minimal plan length 
-global curr_plan              # current plan 
 global nameStr  
 global extraAction 
 actionList = [] 
@@ -41,7 +40,6 @@ def createNameStr() :
 def steps(m) :
     global curr_as 
     global debug 
-    global curr_plan
     global extraAction
     
     if (debug) : print ("Answer: {}".format(m))     
@@ -52,25 +50,13 @@ def steps(m) :
                   (y) =  curr_as[x].arguments[0] 
                   if (debug) :  print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments, ' === ', y, ' +++ ', y.arguments) 
                   elem = clingo.Function("considered",[y.arguments[0]]) 
+                  if (debug) :  print (elem)
                   if (not (elem in extraAction)) : extraAction.append(elem)
              
              if (curr_as[x].match("considered",1)) :
                   if (debug) :  print (x, ':', curr_as[x], ' <<< ', curr_as[x].arguments)   
                   if (not (curr_as[x] in extraAction)) : extraAction.append(curr_as[x])
  
-
-
-def getPlan(): 
-    
-    curr_plan = []
-    
-    for x in range(0, len(curr_as)) : 
-        if (curr_as[x].match("occurs",2)) :
-             if (debug) :  print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments)     
-             curr_plan.append(curr_as[x])
-
-    if (debug) :  print (curr_plan)
-
 
 def computeMax(m):
     global curr_as
@@ -85,35 +71,16 @@ def computeMax(m):
 def main(prg):
     global debug 
     global curr_as
-    global minLength 
-    global curr_plan
+    global minLength
     global nameStr  
     global extraAction
     
-    debug = False 
-    curr_plan = []
+    debug = False
     nameStr = ''
     extraAction = [] 
     
     start_time = datetime.datetime.now()  
-    
-    os.system("clingo ../../../defh.lp human.lp --outf=0 -V0 --out-atomf=%s. --quiet=1,2,2 | head -n1 > h.lp")
-    
-    os.system("clingo ../../../defr.lp robot.lp --outf=0 -V0 --out-atomf=%s. --quiet=1,2,2 | head -n1 > r.lp")
-
-    os.system("clingo ../../../plan.lp robot.lp --outf=0 -V0 --out-atomf=%s. --quiet=1,2,2 | head -n1 > t1.lp") 
-
-    os.system("clingo ../../../explain.lp human.lp t1.lp h.lp r.lp --outf=0 -V0 --out-atomf=%s. --quiet=1,2,2 | head -n1 > t2.lp") 
-    
-    os.system("echo '#program robot.' | cat - t2.lp > tmp.lp")
-    os.system("mv tmp.lp t2.lp") 
-    
-    os.system("echo '#program base.' | cat - h.lp > tmp.lp")
-    os.system("mv tmp.lp h.lp")
-
-    os.system("echo '#program actions.' | cat - r.lp > tmp.lp")
-    os.system("mv tmp.lp r.lp")
-     
+         
     prg.ground([("actions",[])])
     
     prg.solve(None, on_model=actionsList)
@@ -147,7 +114,7 @@ def main(prg):
             ret = prg.solve(None, on_model=steps)  
             if (ret.satisfiable) : 
                  if (t == minLength.number) :  
-                     print ("Minimal plan has the same length as robot plan. Done!\nThe following actions have been modified to match with the robot's specification.") 
+                     print ("\n\nMinimal plan has the same length as robot plan. Done!\nThe following actions have been modified to match with the robot's specification.") 
                  else :                   
                      print ("Need modification  =============== ") 
                      
