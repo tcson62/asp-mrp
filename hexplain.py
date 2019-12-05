@@ -4,6 +4,7 @@ import datetime
 import string
 import sys 
 import clingo 
+import os
 
 global debug                   
 global curr_as                 # current answer set 
@@ -19,7 +20,7 @@ def actionsList(m) :
     if (debug) : print ("Current answer set ", curr_as) 
     for x in range(0, len(curr_as)) :  
              if (curr_as[x].match("act", 1)) : 
-                  # print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments, '----', len(curr_as[x].arguments))     
+                  if (debug) :   print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments, '----', len(curr_as[x].arguments))     
                   [(B)] = curr_as[x].arguments
                   actionList.append(B)  
 
@@ -49,12 +50,12 @@ def steps(m) :
     for x in range(0, len(curr_as)) :  
              if (curr_as[x].match("occurs", 2)) : 
                   (y) =  curr_as[x].arguments[0] 
-                  print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments, ' === ', y, ' +++ ', y.arguments) 
+                  if (debug) :  print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments, ' === ', y, ' +++ ', y.arguments) 
                   elem = clingo.Function("considered",[y.arguments[0]]) 
                   if (not (elem in extraAction)) : extraAction.append(elem)
              
              if (curr_as[x].match("considered",1)) :
-                  print (x, ':', curr_as[x], ' <<< ', curr_as[x].arguments)   
+                  if (debug) :  print (x, ':', curr_as[x], ' <<< ', curr_as[x].arguments)   
                   if (not (curr_as[x] in extraAction)) : extraAction.append(curr_as[x])
  
 
@@ -65,7 +66,7 @@ def getPlan():
     
     for x in range(0, len(curr_as)) : 
         if (curr_as[x].match("occurs",2)) :
-             print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments)     
+             if (debug) :  print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments)     
              curr_plan.append(curr_as[x])
 
     if (debug) :  print (curr_plan)
@@ -78,7 +79,7 @@ def computeMax(m):
     if (debug) :  print ("List of all elements: {}".format(curr_as))        
     for x in range(0, len(curr_as)) : 
          if (curr_as[x].match("maxTime",1)) :
-             print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments)     
+             if (debug) :  print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments)     
              minLength = curr_as[x].arguments[0]   
 
 def main(prg):
@@ -96,6 +97,23 @@ def main(prg):
     
     start_time = datetime.datetime.now()  
     
+    os.system("clingo ../../../defh.lp human.lp --outf=0 -V0 --out-atomf=%s. --quiet=1,2,2 | head -n1 > h.lp")
+    
+    os.system("clingo ../../../defr.lp robot.lp --outf=0 -V0 --out-atomf=%s. --quiet=1,2,2 | head -n1 > r.lp")
+
+    os.system("clingo ../../../plan.lp robot.lp --outf=0 -V0 --out-atomf=%s. --quiet=1,2,2 | head -n1 > t1.lp") 
+
+    os.system("clingo ../../../explain.lp human.lp t1.lp h.lp r.lp --outf=0 -V0 --out-atomf=%s. --quiet=1,2,2 | head -n1 > t2.lp") 
+    
+    os.system("echo '#program robot.' | cat - t2.lp > tmp.lp")
+    os.system("mv tmp.lp t2.lp") 
+    
+    os.system("echo '#program base.' | cat - h.lp > tmp.lp")
+    os.system("mv tmp.lp h.lp")
+
+    os.system("echo '#program actions.' | cat - r.lp > tmp.lp")
+    os.system("mv tmp.lp r.lp")
+     
     prg.ground([("actions",[])])
     
     prg.solve(None, on_model=actionsList)
@@ -117,7 +135,7 @@ def main(prg):
     prg.ground([("base",[])])
     
     t = 1 
-    print ("Max Step .... ", minLength.number) 
+    print ("Number of steps .... ", minLength.number) 
 
     while (t < minLength.number+1): 
             prg.ground([("step",[t])])

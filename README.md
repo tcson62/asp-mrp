@@ -21,5 +21,14 @@ Code structures
     
     TODO: need to find way to remove these three minor steps. 
     
+    * echo '#program robot.' | cat - t2.lp > tmp.lp
+      mv tmp.lp t2.lp 
+      echo '#program base.' | cat - h.lp > tmp.lp
+      mv tmp.lp h.lp
+      echo '#program actions.' | cat - r.lp > tmp.lp
+      mv tmp.lp r.lp 
+        
 3. Computing the explanation 
     * clingo hexplain.py human.lp r.lp h.lp t2.lp verify.lp
+    
+A script is given in run.sh 
