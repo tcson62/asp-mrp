@@ -2,77 +2,93 @@
 
 import clingo 
 
-actionList = [] 
-actionListName = [] 
-
 global nameStr  
+braveCons = [] 
+cautiousCons = [] 
 
-def all_model(m) :
-
-    curr_as = m.symbols(shown=True)
-    # print ("Current answer set ", curr_as) 
-    for x in range(0, len(curr_as)) :  
-             print (x, ':', curr_as[x], ' --- ', curr_as[x].arguments, '----', len(curr_as[x].arguments))     
-             [(B)] = curr_as[x].arguments
-             actionList.append(B)  
-
-def second(m) :
-
+def brave_model(m) :
+    global braveCons 
+    braveCons =[] 
+    print ("Current answer set type ", m.type) 
+   
     curr_as = m.symbols(atoms=True)
-    print ("Current answer set  second", curr_as) 
-     
+    
+    for x in curr_as : 
+             braveCons.append(x)  
 
 
-def addSameName() :
-    for x in range(0, len(actionList)) :
-          (y) = actionList[x] 
-          if (len(y.arguments) > 0) : 
-               print ("Looking for similar action ", y.arguments[0])  
-               for z in range(x, len(actionList)) :
-                    (t) = actionList[z]  
-                    print (x, z,  '---', y, ':', y.arguments, '+++', t.arguments)
-                    if (len(t.arguments) > 0) : 
-                          if (y.arguments[0] == t.arguments[0]) : 
-                               addSimilar = clingo.Function("same",[actionList[x], actionList[z]]) 
-                               print ("added : ",  addSimilar)
+def cautious_model(m) :
+    global cautiousCons 
+    cautiousCons =[] 
+    print ("Current answer set type ", m.type) 
+   
+    curr_as = m.symbols(atoms=True)
+    
+    for x in curr_as : 
+            cautiousCons.append(x)  
 
-def createNameList() : 
-    for x in range(0, len(actionList)) :
-          (y) = actionList[x] 
-          if (len(y.arguments) > 0) :                     
-               addListName = clingo.Function("name",[actionList[x], y.arguments[0]]) 
-               actionListName.append(addListName)
-                 
-def createNameStr() :
-    global nameStr 
-    for x in range(0, len(actionList)) :
-          (y) = actionList[x] 
-          if (len(y.arguments) > 0) :
-               nameStr = nameStr + "name(" + format(y) +", "+format(y.arguments[0])+").\n"
-  
+def prg_model(m) : 
+    global nameStr  
 
+    listAdd = [] 
+    nameStr = ':- '
+    print ("Current answer set type ", m.type) 
+    print ("Content: {}". format(m)) 
+   
+    curr_as = m.symbols(atoms=True)
+    
+    # the following can be rewritten to make it nicer 
+    # this is pretty naive encoding 
+    
+    for x in curr_as :
+         if (x not in cautiousCons) : listAdd.append(x) 
+   
+    print ("List of brave consequence not in the model : {}". format(listAdd)) 
+    for id in range(0, len(listAdd)):  
+         if (id < len(listAdd) - 1) :  nameStr = nameStr + format(listAdd[id]) + ','
+         else :  nameStr = nameStr + format(listAdd[id]) + '.\n'
+
+
+ 
 def main(prg):
     global nameStr
 
     nameStr = '' 
     prg.ground([("base",[])])
-    prg.ground([("actions",[])])
-    print ("Signature: {} ".format( prg.symbolic_atoms.signatures))
-    prg.solve(None, on_model=all_model) 
 
-    # print ("Actions: >>>>>>>>>  ", actionList) 
-
-    createNameList()       
-     
-    createNameStr()               
+    # getting brave consequences 
     
-    print ( nameStr )
+    prg.configuration.solve.enum_mode = "brave" 
+    
+    prg.solve(None, on_model=brave_model) 
+
+    print ("Brave consequences: {}". format(braveCons)) 
+
+    # getting cautious consequences 
+
+    prg.configuration.solve.enum_mode = "cautious" 
+    
+    prg.solve(None, on_model=cautious_model) 
+
+    print ("Cautious consequences: {}". format(cautiousCons)) 
+
+    # getting stable models  
+
+    prg.configuration.solve.enum_mode = "auto" 
+
+    prg.solve(None, on_model=prg_model) 
+    
+    print ("Add constraint: {}". format(nameStr)) 
     
     prg.add("names", [],  nameStr)
+
+    prg.ground([("names",[])]) 
     
-    prg.ground([("names",[])])
-        
-    prg.solve(None, on_model=second) 
-
-
+    # getting next models  
+    
+    prg.solve(None, on_model=prg_model) 
+    
+    # what you need to do is to create a loop and making sure that "names"
+    # get different names in each iteration 
+    
 #end. 
