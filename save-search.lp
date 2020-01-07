@@ -36,6 +36,11 @@ robot(executable(A, T)):-  time(T), robot(action(action(A))),
 
 hh(X, 1) :- human(initialState(X, value(X, true))), not remove(initial(X)).
 
+
+%#program step(t).
+
+%time(t). 
+
 hh(X, T+1) :- time(T), occurs(A, T), 
                    human(postcondition(action(A), effect(unconditional), X, value(X, true))), 
                    not remove(postcondition(action(A), effect(unconditional), X, value(X, true))).
@@ -45,58 +50,22 @@ hh(X, T+1) :- time(T), human(action(action(A))), occurs(A, T),
                    
 hh(X, T+1) :- time(T), human(action(action(A))), occurs(A, T), 
                    hh(X, T), 
-                   not human(postcondition(action(A), effect(unconditional), X, value(X, false))), 
-                   not add(postcondition(action(A), effect(unconditional), X, value(X, false))).                  
+                   not human(postcondition(action(A), effect(unconditional), X, value(X, false))).                  
 
-human(executable(A, T)):-  time(T), occurs(A,T), 
-                    #count {1,X : human(precondition(action(A), X, value(X, true))), 
-                                         not remove(precondition(action(A), X, value(X, true))), not hh(X, T)} == 0,
-                    #count {1,X : add(precondition(action(A), X, value(X, true))), not hh(X, T)} == 0.
-                     
+human(executable(A, T)):-  time(T), human(action(action(A))), 
+                    #count {1,X : human(precondition(action(A), X, value(X, true))), not hh(X, T)} == 0. 
+
 :- time(T), human(action(action(A))), occurs(A, T), not human(executable(A, T)). 
 
 %% 1{occurs(A, T) : human(action(action(A)))} 1 :- time(T), T < length, human(goal(X, value(X, true))), not hh(X, T).
 
 :- human(goal(X, value(X, true))), not hh(X, length).
 
+#show occurs/2. 
+%#show A : robot(executable(A,1)). 
+%#show X : h(X, 1). 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% hypothetical reasoning 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-hp(X, 1) :- human(initialState(X, value(X, true))), not remove(initial(X)).
-
-hp(X, T+1) :- time(T), occurs_hp(A, T), 
-                   human(postcondition(action(A), effect(unconditional), X, value(X, true))), 
-                   not remove(postcondition(action(A), effect(unconditional), X, value(X, true))).
-
-hp(X, T+1) :- time(T), occurs_hp(A, T), 
-                   add(postcondition(action(A), effect(unconditional), X, value(X, true))). 
-                   
-hp(X, T+1) :- time(T), occurs_hp(A, T), 
-                   hp(X, T), 
-                   not human(postcondition(action(A), effect(unconditional), X, value(X, false))), 
-                   not add(postcondition(action(A), effect(unconditional), X, value(X, false))).                  
-
-hp_human(executable(A, T)):-  time(T), occurs_hp(A,T), 
-                    #count {1,X : human(precondition(action(A), X, value(X, true))), 
-                                         not remove(precondition(action(A), X, value(X, true))), not hp(X, T)} == 0,
-                    #count {1,X : add(precondition(action(A), X, value(X, true))), not hp(X, T)} == 0.
-                     
-:- time(T), occurs_hp(A, T), not h_human(executable(A, T)). 
-
-1{occurs_hp(A, T) : hp_action(A)} 1 :- time(T), T < length, human(goal(X, value(X, true))), not hp(X, T).
-
-:- human(goal(X, value(X, true))), not hp(X, length).
-
-hp_action(A) :- human(action(action(A))). 
-hp_action(A) :- add(action(A)). 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% differences 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 diff_plus(X, 1) :- hr(X, 1), not human(initialState(X, value(X, true))),  time(T), not hr(X, T). 
 diff_mnus(X, 1) :- human(initialState(X, value(X, true))), not hr(X, 1), time(T), hr(X, T). 
@@ -139,16 +108,3 @@ remove(precondition(action(A), X, value(X, false))) :-
          occurs(A, _),  
 	robot(precondition(action(A), X, value(X, true))), 
 	human(precondition(action(A), X, value(X, false))).
-
-changes(Changes) :-  Add = #count{1,X : add(X)}, 
-                                   Remove = #count{1,X : remove(X)}, 
-                                   Changes = Add + Remove. 
-                                   
-#minimize {C : changes(C)}.                                    
-
-
-#show occurs/2. 
-#show changes/1.
-
-%#show add/1. 
-%#show remove/1. 
