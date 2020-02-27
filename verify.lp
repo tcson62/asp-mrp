@@ -6,7 +6,7 @@
 
  #external considered(A) : robot(action(A)). 
 
- considered(Act) :- robot(occurs(A, T)), name(A, Act). 
+% considered(Act) :- robot(occurs(A, T)), name(A, Act). 
 
  h(X, 1) :- initialState(X, value(X, true)).
 
@@ -51,17 +51,20 @@
  {remove(action(A))} :- human(action(A)), not robot(action(A)).
 
  %% postconditions are added if they are necessary for the optimal plan 
-
- add(postcondition(action(A), B, X, value(X, BoolV))) :- robot(postcondition(action(A), B, X, value(X, BoolV))), 
- 		robot(occurs(A,_)),  
- 		not human(postcondition(action(A), B, X, value(X, BoolV))).	
+  add(postcondition(action(A), B, X, value(X, BoolV))) :- human(postcondition(action(A), B, X, value(X, BoolV))).
+  
+  add(precondition(action(A), X, value(X, BoolV))) :- human(precondition(action(A), X, value(X, BoolV))).
+  
+% add(postcondition(action(A), B, X, value(X, BoolV))) :- robot(postcondition(action(A), B, X, value(X, BoolV))), 
+% 		robot(occurs(A,_)),  
+% 		not human(postcondition(action(A), B, X, value(X, BoolV))).	
 
  %% preconditions are added if they are necessary for the optimal plan 
 
- add(precondition(action(A), X, value(X, BoolV))) :- robot(precondition(action(A), X, value(X, BoolV))), 
- 		robot(occurs(A,_)),
- %		contradictory(BoolV, NBoolV),
- 		not human(precondition(action(A), X, value(X, BoolV))).	 
+% add(precondition(action(A), X, value(X, BoolV))) :- robot(precondition(action(A), X, value(X, BoolV))), 
+% 		robot(occurs(A,_)),
+% %		contradictory(BoolV, NBoolV),
+% 		not human(precondition(action(A), X, value(X, BoolV))).	 
 
  %% postconditions are removed if they are contradictory with what the robot believes 
 
@@ -121,6 +124,8 @@
  #show time/1.
  #show maxTime/1. 
  #show considered/1. 
+ #show changes(X) : true(X), not human(X).
+ %#show add/1.
 
  %%% #show exec(A) : executable(A,1).
  %%% #show noopCount/1. 
