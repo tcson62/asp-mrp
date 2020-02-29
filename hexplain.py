@@ -96,10 +96,10 @@ def compare(robot_plan, human_plan):
     while (t < minLength.number+1):
         robot_step = extract_step(robot_plan, t)
         human_step = extract_step(human_plan, t)
-        print("The first action that is different in robot plan and human plan: ")
         print("Robot: " + str(robot_step))
         print("Human: " + str(human_step))
         if str(robot_step) != str(human_step):
+            print("Detect the first action that is different in robot plan and human plan")
             return robot_step, human_step
             
         t = t + 1
@@ -113,7 +113,7 @@ def main(prg):
     
     changes_set = []
     
-    debug = True
+    debug = False
     nameStr = ''
     extraAction = [] 
     
@@ -164,11 +164,11 @@ def main(prg):
                 robot_step, human_step = compare(robot_plan, human_plan)
                 
                 print ("Put action of robot step in considered")
-                a = clingo.Function("action", [human_step.arguments[0]])
-                change_act = clingo.Function("considered", [a])
+                change_act = clingo.Function("considered", [human_step.arguments[0]])
+                print (change_act)
                 prg.assign_external(change_act, True)
 
-                changes_set.append(a.arguments[0])
+                changes_set.append(human_step.arguments[0])
                 
                 # activate human action in verify_v2
                 # for s in human_plan:

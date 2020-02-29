@@ -6,7 +6,7 @@
 
  #external considered(A) : robot(action(A)). 
 
-% considered(Act) :- robot(occurs(A, T)), name(A, Act). 
+considered(Act) :- robot(occurs(A, T)), name(A, Act). 
 
  h(X, 1) :- initialState(X, value(X, true)).
 
