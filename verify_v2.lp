@@ -41,6 +41,8 @@ true(precondition(action(A), C, D)) :- add(precondition(action(A), C, D)).
 
 remove(action(A)) :-  considered(A), not robot(action(A)).
 
+{add(action(A))} :- robot(occurs(A,_)), not human(action(A)).
+action(action(A)) :- add(action(A)). 
 considered(A) :- add(action(A)).
 
 {remove(action(A))} :- human(action(A)), not robot(action(A)).
@@ -68,6 +70,21 @@ executable(A, t):-  action(action(A)),
 
 :- query(t), goal(X, value(X, true)), not h(X, t).
 
+#program optimal.
+
+total_change(N) :- N1 = #count{1,(A,B,C,D) : add(postcondition(A, B, C, D))},
+		    R1 = #count{1,(A,B,C,D) : remove(postcondition(A, B, C, D))}, 
+                     N2 = #count{1,(A,B,C) : add(precondition(A, B, C))},
+                     R2 = #count{1,(A,B,C) :  remove(precondition(A, B, C))},
+                     N3 = #count{1,A : add(action(A))},
+                     R3 = #count{1,A :  remove(action(A))},
+                     N = N1 + N2 + N3 + R1 + R2 + R3.
+
+#minimize {N : total_change(N)}.                     
+
+                     
+
+
 #show.
 #show occurs/2. 
 % #show time/1.
@@ -77,4 +94,5 @@ executable(A, t):-  action(action(A)),
 % #show true/1.
 % #show h/2.
 % #show robot_action(A) : robot(action(A)).
-#show remove/1.
+% #show remove/1.
+#show total_change/1.

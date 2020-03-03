@@ -85,24 +85,25 @@ def computeMax(m):
             if (curr_as[x].arguments[0].name == "occurs") :
                 robot_plan.append( curr_as[x].arguments[0] )
 
-def compare(robot_plan, human_plan):
-    def extract_step(plan, step):
-        for p in plan:
-            if p.arguments[1].number == step:
-                return p
-        
-    global minLength
-    t = 1
-    while (t < minLength.number+1):
-        robot_step = extract_step(robot_plan, t)
-        human_step = extract_step(human_plan, t)
-        print("Robot: " + str(robot_step))
-        print("Human: " + str(human_step))
-        if str(robot_step) != str(human_step):
-            print("Detect the first action that is different in robot plan and human plan")
-            return robot_step, human_step
-            
-        t = t + 1
+# def compare(robot_plan, human_plan):
+#     def extract_step(plan, step):
+#         for p in plan:
+#             if p.arguments[1].number == step:
+#                 return p
+#
+#     global minLength
+#     t = 1
+#     while (t < minLength.number+1):
+#         robot_step = extract_step(robot_plan, t)
+#         human_step = extract_step(human_plan, t)
+#         print("Robot: " + str(robot_step))
+#         print("Human: " + str(human_step))
+#         if str(robot_step) != str(human_step):
+#             print("Detect the first action that is different in robot plan and human plan")
+#             return robot_step, human_step
+#
+#         t = t + 1
+
 
 def main(prg):
     global debug 
@@ -110,10 +111,12 @@ def main(prg):
     global minLength
     global nameStr  
     global extraAction
+    global human_plan
     
     changes_set = []
     
     debug = False
+    vdebug = True
     nameStr = ''
     extraAction = [] 
     
@@ -125,7 +128,7 @@ def main(prg):
     
     createNameStr() 
     
-    if (debug) : print ("List of names: >>>> ", nameStr) 
+    if (debug) : print ("List of names: >>>> ", actionList) 
     
     prg.add("names", [],  nameStr)
     
@@ -158,33 +161,18 @@ def main(prg):
                 t = t+1
                 break
             else :
-                print ("Need modification on changes set =============== ")
-                print ("Robot plan: " + str(robot_plan))
-                print ("Human plan: " + str(human_plan))
-                robot_step, human_step = compare(robot_plan, human_plan)
-                
-                print ("Put action of robot step in considered")
-                change_act = clingo.Function("considered", [human_step.arguments[0]])
-                print (change_act)
-                prg.assign_external(change_act, True)
-
-                changes_set.append(human_step.arguments[0])
-                
-                # activate human action in verify_v2
-                # for s in human_plan:
-                #     a = clingo.Function("action", [s.arguments[0]])
-                #     change_act = clingo.Function("considered", [a])
-                #     prg.assign_external(change_act, True)
+                print ("Need modification =============== ")
+                # print ("Robot plan: " + str(robot_plan))
+                # print ("Human plan: " + str(human_plan))
+                # robot_step, human_step = compare(robot_plan, human_plan)
                 #
-                #     changes_set.append(a.arguments[0])
+                print ("Put action in considered")
+                for a in human_plan:
+                    change_act = clingo.Function("considered", [a.arguments[0]])
+                    print (change_act)
+                    prg.assign_external(change_act, True)
+                    changes_set.append(a.arguments[0])
                 
-                # activate robot action in verify_v2
-                # for s in robot_plan:
-                #     a = clingo.Function("action", [s.arguments[0]])
-                #     change_act = clingo.Function("considered", [a])
-                #     prg.assign_external(change_act, True)
-                #
-                #     changes_set.append(a.arguments[0])
         else:
             prg.assign_external(step, False)
             t = t+1
@@ -193,7 +181,10 @@ def main(prg):
     
     # print (extraAction)
     print (set(changes_set))
-
+    
+    prg.ground([("optimal",[])]) 
+    prg.solve(None)
+    
     end_time = datetime.datetime.now()
 
     elapsed = end_time - start_time
