@@ -1,0 +1,112 @@
+Preparation .... ******************* 
+Computing minimal plan for robot ....*********** 
+Finding the first set of explanations .... ************ 
+Computing minimal explanation for human plan .... *********** 
+clingo version 5.4.0
+Reading from hexplain.py ...
+Solving...
+Answer: 1
+
+Solving...
+Answer: 1
+
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Answer: 1
+considered(("pickup",constant("f"))) considered(("pickup",constant("e"))) considered(("pickup",constant("c"))) considered(("pickup",constant("d"))) considered(("putdown",constant("d"))) considered(("stack",constant("e"),constant("h"))) considered(("stack",constant("a"),constant("h"))) considered(("stack",constant("a"),constant("g"))) considered(("stack",constant("d"),constant("f"))) considered(("stack",constant("f"),constant("e"))) considered(("stack",constant("h"),constant("c"))) considered(("stack",constant("g"),constant("b"))) considered(("stack",constant("c"),constant("a"))) considered(("unstack",constant("d"),constant("h"))) considered(("unstack",constant("a"),constant("h"))) considered(("unstack",constant("a"),constant("g"))) considered(("unstack",constant("h"),constant("f"))) considered(("unstack",constant("g"),constant("e"))) occurs(("unstack",constant("a"),constant("g")),1) occurs(("stack",constant("a"),constant("c")),2) occurs(("unstack",constant("g"),constant("e")),3) occurs(("stack",constant("g"),constant("b")),4) occurs(("unstack",constant("a"),constant("c")),5) occurs(("stack",constant("a"),constant("g")),6) occurs(("pickup",constant("c")),7) occurs(("stack",constant("c"),constant("a")),8) occurs(("unstack",constant("d"),constant("h")),9) occurs(("putdown",constant("d")),10) occurs(("unstack",constant("h"),constant("f")),11) occurs(("stack",constant("h"),constant("c")),12) occurs(("pickup",constant("e")),13) occurs(("stack",constant("e"),constant("h")),14) occurs(("pickup",constant("f")),15) occurs(("stack",constant("f"),constant("e")),16) occurs(("pickup",constant("d")),17) occurs(("stack",constant("d"),constant("f")),18)
+Solving...
+Answer: 1
+considered(("pickup",constant("f"))) considered(("pickup",constant("e"))) considered(("pickup",constant("c"))) considered(("pickup",constant("d"))) considered(("putdown",constant("d"))) considered(("stack",constant("e"),constant("h"))) considered(("stack",constant("a"),constant("h"))) considered(("stack",constant("a"),constant("g"))) considered(("stack",constant("d"),constant("f"))) considered(("stack",constant("f"),constant("e"))) considered(("stack",constant("h"),constant("c"))) considered(("stack",constant("g"),constant("b"))) considered(("stack",constant("c"),constant("a"))) considered(("unstack",constant("d"),constant("h"))) considered(("unstack",constant("a"),constant("h"))) considered(("unstack",constant("a"),constant("g"))) considered(("unstack",constant("h"),constant("f"))) considered(("unstack",constant("g"),constant("e"))) total_change(1056) occurs(("unstack",constant("a"),constant("g")),1) occurs(("stack",constant("a"),constant("d")),2) occurs(("unstack",constant("g"),constant("e")),3) occurs(("stack",constant("g"),constant("b")),4) occurs(("unstack",constant("a"),constant("d")),5) occurs(("stack",constant("a"),constant("g")),6) occurs(("unstack",constant("d"),constant("h")),7) occurs(("putdown",constant("d")),8) occurs(("pickup",constant("c")),9) occurs(("stack",constant("c"),constant("a")),10) occurs(("unstack",constant("h"),constant("f")),11) occurs(("stack",constant("h"),constant("c")),12) occurs(("pickup",constant("e")),13) occurs(("stack",constant("e"),constant("h")),14) occurs(("pickup",constant("f")),15) occurs(("stack",constant("f"),constant("e")),16) occurs(("pickup",constant("d")),17) occurs(("stack",constant("d"),constant("f")),18)
+Optimization: 1056
+OPTIMUM FOUND
+
+Models       : 4
+  Optimum    : yes
+Optimization : 1056
+Calls        : 22
+Time         : 176.298s (Solving: 174.41s 1st Model: 59.81s Unsat: 114.60s)
+CPU Time     : 175.685s
+Minimal robot plan length: 19
+Number of steps ....  19
+
+Step ....  1  >>>  query(1)
+
+
+Step ....  2  >>>  query(2)
+
+
+Step ....  3  >>>  query(3)
+
+
+Step ....  4  >>>  query(4)
+
+
+Step ....  5  >>>  query(5)
+
+
+Step ....  6  >>>  query(6)
+
+
+Step ....  7  >>>  query(7)
+
+
+Step ....  8  >>>  query(8)
+
+
+Step ....  9  >>>  query(9)
+
+
+Step ....  10  >>>  query(10)
+
+
+Step ....  11  >>>  query(11)
+
+
+Step ....  12  >>>  query(12)
+
+
+Step ....  13  >>>  query(13)
+
+
+Step ....  14  >>>  query(14)
+
+
+Step ....  15  >>>  query(15)
+
+
+Step ....  16  >>>  query(16)
+
+
+Step ....  17  >>>  query(17)
+
+
+Step ....  18  >>>  query(18)
+
+
+Step ....  19  >>>  query(19)
+
+
+
+Minimal plan has the same length as robot plan. Done!
+The following actions have been modified to match with the robot's specification.
+set()
+Elapsed time:  0:02:56.130461
+[37m[42mWed Mar  4 16:48:01 MST 2020(B[0m
+[37m[42mWed Mar  4 16:53:54 MST 2020(B[0m
