@@ -3,6 +3,8 @@
 #external considered(A) : robot(action(A)). 
 #external considered(A) : human(action(A)). 
 
+considered(A) :- robot(occurs(A, T)). 
+
 h(X, 1) :- initialState(X, value(X, true)).
 
 % condition for the robot plans 
@@ -41,11 +43,11 @@ true(precondition(action(A), C, D)) :- add(precondition(action(A), C, D)).
 
 remove(action(A)) :-  considered(A), not robot(action(A)).
 
-{add(action(A))} :- robot(occurs(A,_)), not human(action(A)).
 action(action(A)) :- add(action(A)). 
+{add(action(A))} :- robot(occurs(A,_)), not human(action(A)).
+{remove(action(A))} :- human(action(A)), not robot(action(A)).
 considered(A) :- add(action(A)).
 
-{remove(action(A))} :- human(action(A)), not robot(action(A)).
 
 #program step(t).
 
