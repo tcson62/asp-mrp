@@ -33,9 +33,9 @@ Code structures
 
 A script is given in run.sh  -->
 
-./vrun.sh <folder>
+./vrun.sh folder
 
-<folder> contains human.lp and robot.lp
+folder contains human.lp and robot.lp
   
 Example:
 ./vrun.sh test/Exp1
