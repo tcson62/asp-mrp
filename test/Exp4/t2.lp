@@ -1,0 +1,2 @@
+#program robot.
+maxTime(5). time(1). time(2). time(3). time(4). time(5). robot(occurs(("unstack",constant("a"),constant("b")),1)). robot(occurs(("putdown",constant("a")),2)). robot(occurs(("pickup",constant("b")),3)). robot(occurs(("stack",constant("b"),constant("a")),4)). change(0). add(initialState(variable("handempty"),value(variable("handempty"),true))). add(initialState(variable(("clear",constant("a"))),value(variable(("clear",constant("a"))),true))).

@@ -1,7 +1,17 @@
 maxTime(N) :- N = #max {T : time(T)}. 
 preTime(T) :- time(T), maxTime(N), T < N. 
 
-h(X, 1) :- initialState(X, value(X, true)).
+% h(X, 1) :- initialState(X, value(X, true)).
+
+{ add(initialState(X,value(X,true))) } :- robot(initialState(X,value(X,true))), human(initialState(X,value(X,false))). 
+
+{ remove(initialState(X,value(X,true))) } :- robot(initialState(X,value(X,false))), human(initialState(X,value(X,true))). 
+
+h(X,1) :- robot(initialState(X,value(X,true))), human(initialState(X,value(X,true))). 
+
+h(X,1) :- human(initialState(X,value(X,true))), not remove(initialState(X,value(X,true))).
+
+h(X,1):- add(initialState(X,value(X,true))).
 
 % condition for the robot plans 
 
@@ -87,7 +97,9 @@ change(N) :- N1 = #count{1,(A,B,C,D) : add(postcondition(A, B, C, D))},
                      R2 = #count{1,(A,B,C) :  remove(precondition(A, B, C))},
                      N3 = #count{1,A : add(action(A))},
                      R3 = #count{1,A :  remove(action(A))},
-                     N = N1 + N2 + N3 + R1 + R2 + R3.
+                     I1 = #count{X : add(initialState(X,value(X,true)))},
+                     I2 = #count{X : remove(initialState(X,value(X,true)))},
+                     N = N1 + N2 + N3 + R1 + R2 + R3 + I1 + I2.
 
 
                      
