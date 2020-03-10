@@ -1,0 +1,91 @@
+Preparation .... ******************* 
+Computing minimal plan for robot ....*********** 
+Finding the first set of explanations .... ************ 
+Computing minimal explanation for human plan .... *********** 
+clingo version 5.4.0
+Reading from hexplain.py ...
+Solving...
+Answer: 1
+
+Solving...
+Answer: 1
+
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+UNKNOWN
+
+INTERRUPTED  : 1
+Models       : 2+
+Calls        : 19
+Time         : 37.703s (Solving: 36.15s 1st Model: 0.00s Unsat: 35.27s)
+CPU Time     : 37.549s
+Minimal robot plan length: 19
+Number of steps ....  19
+
+Step ....  1  >>>  query(1)
+
+
+Step ....  2  >>>  query(2)
+
+
+Step ....  3  >>>  query(3)
+
+
+Step ....  4  >>>  query(4)
+
+
+Step ....  5  >>>  query(5)
+
+
+Step ....  6  >>>  query(6)
+
+
+Step ....  7  >>>  query(7)
+
+
+Step ....  8  >>>  query(8)
+
+
+Step ....  9  >>>  query(9)
+
+
+Step ....  10  >>>  query(10)
+
+
+Step ....  11  >>>  query(11)
+
+
+Step ....  12  >>>  query(12)
+
+
+Step ....  13  >>>  query(13)
+
+
+Step ....  14  >>>  query(14)
+
+
+Step ....  15  >>>  query(15)
+
+
+Step ....  16  >>>  query(16)
+
+
+Step ....  17  >>>  query(17)
+
+[37m[42mWed Mar  4 16:53:54 MST 2020(B[0m
+[37m[42mWed Mar  4 16:57:34 MST 2020(B[0m

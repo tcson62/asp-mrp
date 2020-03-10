@@ -1,0 +1,120 @@
+Preparation .... ******************* 
+Computing minimal plan for robot ....*********** 
+Finding the first set of explanations .... ************ 
+Computing minimal explanation for human plan .... *********** 
+clingo version 5.4.0
+Reading from hexplain.py ...
+Solving...
+Answer: 1
+
+Solving...
+Answer: 1
+
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Answer: 1
+considered(("pickup",constant("a"))) considered(("pickup",constant("b"))) considered(("pickup",constant("g"))) considered(("pickup",constant("d"))) considered(("putdown",constant("a"))) considered(("putdown",constant("b"))) considered(("putdown",constant("g"))) considered(("putdown",constant("e"))) considered(("stack",constant("b"),constant("c"))) considered(("stack",constant("c"),constant("f"))) considered(("stack",constant("d"),constant("b"))) considered(("stack",constant("a"),constant("g"))) considered(("stack",constant("g"),constant("d"))) considered(("stack",constant("f"),constant("e"))) considered(("unstack",constant("f"),constant("c"))) considered(("unstack",constant("a"),constant("f"))) considered(("unstack",constant("b"),constant("a"))) considered(("unstack",constant("g"),constant("b"))) considered(("unstack",constant("e"),constant("g"))) considered(("unstack",constant("c"),constant("d"))) occurs(("unstack",constant("e"),constant("g")),1) occurs(("putdown",constant("e")),2) occurs(("unstack",constant("g"),constant("b")),3) occurs(("putdown",constant("g")),4) occurs(("unstack",constant("b"),constant("a")),5) occurs(("stack",constant("b"),constant("g")),6) occurs(("unstack",constant("a"),constant("f")),7) occurs(("putdown",constant("a")),8) occurs(("unstack",constant("f"),constant("c")),9) occurs(("stack",constant("f"),constant("e")),10) occurs(("unstack",constant("c"),constant("d")),11) occurs(("stack",constant("c"),constant("f")),12) occurs(("unstack",constant("b"),constant("g")),13) occurs(("stack",constant("b"),constant("c")),14) occurs(("pickup",constant("d")),15) occurs(("stack",constant("d"),constant("b")),16) occurs(("pickup",constant("g")),17) occurs(("stack",constant("g"),constant("d")),18) occurs(("pickup",constant("a")),19) occurs(("stack",constant("a"),constant("g")),20)
+Solving...
+Answer: 1
+considered(("pickup",constant("a"))) considered(("pickup",constant("b"))) considered(("pickup",constant("g"))) considered(("pickup",constant("d"))) considered(("putdown",constant("a"))) considered(("putdown",constant("b"))) considered(("putdown",constant("g"))) considered(("putdown",constant("e"))) considered(("stack",constant("b"),constant("c"))) considered(("stack",constant("c"),constant("f"))) considered(("stack",constant("d"),constant("b"))) considered(("stack",constant("a"),constant("g"))) considered(("stack",constant("g"),constant("d"))) considered(("stack",constant("f"),constant("e"))) considered(("unstack",constant("f"),constant("c"))) considered(("unstack",constant("a"),constant("f"))) considered(("unstack",constant("b"),constant("a"))) considered(("unstack",constant("g"),constant("b"))) considered(("unstack",constant("e"),constant("g"))) considered(("unstack",constant("c"),constant("d"))) total_change(819) occurs(("unstack",constant("e"),constant("g")),1) occurs(("putdown",constant("e")),2) occurs(("unstack",constant("g"),constant("b")),3) occurs(("putdown",constant("g")),4) occurs(("unstack",constant("b"),constant("a")),5) occurs(("stack",constant("b"),constant("g")),6) occurs(("unstack",constant("a"),constant("f")),7) occurs(("putdown",constant("a")),8) occurs(("unstack",constant("f"),constant("c")),9) occurs(("stack",constant("f"),constant("e")),10) occurs(("unstack",constant("c"),constant("d")),11) occurs(("stack",constant("c"),constant("f")),12) occurs(("unstack",constant("b"),constant("g")),13) occurs(("stack",constant("b"),constant("c")),14) occurs(("pickup",constant("d")),15) occurs(("stack",constant("d"),constant("b")),16) occurs(("pickup",constant("g")),17) occurs(("stack",constant("g"),constant("d")),18) occurs(("pickup",constant("a")),19) occurs(("stack",constant("a"),constant("g")),20)
+Optimization: 819
+OPTIMUM FOUND
+
+Models       : 4
+  Optimum    : yes
+Optimization : 819
+Calls        : 24
+Time         : 15.996s (Solving: 14.87s 1st Model: 4.75s Unsat: 10.11s)
+CPU Time     : 15.987s
+Minimal robot plan length: 21
+Number of steps ....  21
+
+Step ....  1  >>>  query(1)
+
+
+Step ....  2  >>>  query(2)
+
+
+Step ....  3  >>>  query(3)
+
+
+Step ....  4  >>>  query(4)
+
+
+Step ....  5  >>>  query(5)
+
+
+Step ....  6  >>>  query(6)
+
+
+Step ....  7  >>>  query(7)
+
+
+Step ....  8  >>>  query(8)
+
+
+Step ....  9  >>>  query(9)
+
+
+Step ....  10  >>>  query(10)
+
+
+Step ....  11  >>>  query(11)
+
+
+Step ....  12  >>>  query(12)
+
+
+Step ....  13  >>>  query(13)
+
+
+Step ....  14  >>>  query(14)
+
+
+Step ....  15  >>>  query(15)
+
+
+Step ....  16  >>>  query(16)
+
+
+Step ....  17  >>>  query(17)
+
+
+Step ....  18  >>>  query(18)
+
+
+Step ....  19  >>>  query(19)
+
+
+Step ....  20  >>>  query(20)
+
+
+Step ....  21  >>>  query(21)
+
+
+
+Minimal plan has the same length as robot plan. Done!
+The following actions have been modified to match with the robot's specification.
+set()
+Elapsed time:  0:00:15.872563
+[37m[42mWed Mar  4 16:45:11 MST 2020(B[0m
+[37m[42mWed Mar  4 16:45:40 MST 2020(B[0m
