@@ -47,7 +47,7 @@ Example:
 ./vrun.sh test/Exp1
 ```
 
-The explanation will be in the two sets: extraAction and changes_set in file hexplain.py (printed in console). extraAction contains the first set of explanations. The first set of explanations in combination with the human KB can be used to compute human plan. Verifying that the human plan's length is equal robot's plan result in an additional set of explanations. changes_set contains that set. 
+The explanation will be in the two sets: extraAction and changes_set in file hexplain.py (printed in console). extraAction contains the first set of explanations. The first set of explanations in combination with the human KB can be used to compute human plan. Verifying that the human plan's length is equal robot's plan results in an additional set of explanations (changes_set). 
 
 2. To run all experimental instances,
 
@@ -55,7 +55,7 @@ The explanation will be in the two sets: extraAction and changes_set in file hex
 ./run_all.sh
 ```
 
-The result will be printed in ``result'' file in the instance folder.
+The result will be printed in `result` file in the instance folder.
 Run time.py to show runtimes.
 
 <!-- # for whom is a student
