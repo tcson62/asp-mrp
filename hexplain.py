@@ -179,7 +179,7 @@ def main(prg):
 
 
     
-    # print (extraAction)
+    print (extraAction)
     print (set(changes_set))
     
     prg.ground([("optimal",[])]) 
