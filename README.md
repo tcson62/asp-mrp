@@ -40,4 +40,4 @@ folder contains human.lp and robot.lp
 Example:
 ./vrun.sh test/Exp1
 
-The explanation will be in two set: extraAction and changes_set in file hexplain.py
+The explanation will be in the two sets: extraAction and changes_set in file hexplain.py
