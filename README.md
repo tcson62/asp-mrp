@@ -47,7 +47,7 @@ Example:
 ./vrun.sh test/Exp1
 ```
 
-The explanation will be in the two sets: extraAction and changes_set in file hexplain.py (printed in console)
+The explanation will be in the two sets: extraAction and changes_set in file hexplain.py (printed in console). extraAction contains the first set of explanations. The first set of explanations in combination with the human KB can be used to compute human plan. Verifying that the human plan's length is equal robot's plan result in an additional set of explanations. changes_set contains that set. 
 
 2. To run all experimental instances,
 
@@ -55,5 +55,9 @@ The explanation will be in the two sets: extraAction and changes_set in file hex
 ./run_all.sh
 ```
 
-The result will be printed in result file in the instance folder.
+The result will be printed in ``result'' file in the instance folder.
 Run time.py to show runtimes.
+
+<!-- # for whom is a student
+3. If you want to understand the computation process, a good starting point is run.sh. The core steps of the computation are clear. Personally, as a student, I was also given unfamilier code repositories with little documentation, and asked to edit them. I believe to understand how the computation works, reading the code and getting your hands dirty are the musts. Then you can ask the ones who wrote the code if you are still unable to figure out how things work.
+-->
