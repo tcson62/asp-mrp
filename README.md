@@ -33,11 +33,27 @@ Code structures
 
 A script is given in run.sh  -->
 
+1. To run a single instance,
+
+```
 ./vrun.sh folder
+```
 
 folder contains human.lp and robot.lp
   
 Example:
-./vrun.sh test/Exp1
 
-The explanation will be in the two sets: extraAction and changes_set in file hexplain.py
+```
+./vrun.sh test/Exp1
+```
+
+The explanation will be in the two sets: extraAction and changes_set in file hexplain.py (printed in console)
+
+2. To run all experimental instances,
+
+```
+./run_all.sh
+```
+
+The result will be printed in result file in the instance folder.
+Run time.py to show runtimes.
