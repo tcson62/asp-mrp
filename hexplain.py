@@ -76,7 +76,7 @@ def expl(m) :
     for x in range(0, len(curr_as)) :  
         if (curr_as[x].match("considered",1)) :
             # if (debug) :  print (x, ':', curr_as[x], ' <<< ', curr_as[x].arguments)
-            print(curr_as[x], ' ', curr_as[x].arguments)
+            print(curr_as[x].arguments)
                 
 def computeMax(m):
     global curr_as
@@ -186,11 +186,13 @@ def main(prg):
             t = t+1
 
 
-    print("Before optimizing explanation ================")
+    print("\nBefore optimizing explanation ================")
+    print ("extraAction: ")
     print (extraAction)
+    print ("changes_set: ")
     print (set(changes_set))
     
-    print("After optimizing explanation ================")
+    print("\nAfter optimizing explanation ================")
     prg.ground([("optimal",[])]) 
     prg.solve(None, on_model=expl)
     
