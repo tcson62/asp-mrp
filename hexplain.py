@@ -74,9 +74,10 @@ def expl(m) :
     curr_as = m.symbols(shown=True)
     
     for x in range(0, len(curr_as)) :  
-        if (curr_as[x].match("considered",1)) :
+        if (curr_as[x].match("add",1)) or curr_as[x].match("remove",1) :
             # if (debug) :  print (x, ':', curr_as[x], ' <<< ', curr_as[x].arguments)
             print(curr_as[x].arguments)
+
                 
 def computeMax(m):
     global curr_as
