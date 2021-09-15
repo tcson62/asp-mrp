@@ -69,7 +69,15 @@ def steps(m) :
             if (debug) :  print (x, ':', curr_as[x], ' <<< ', curr_as[x].arguments)
             if (not (curr_as[x] in extraAction)) : extraAction.append(curr_as[x])
  
-
+def expl(m) :
+    if (debug) : print ("Answer: {}".format(m))     
+    curr_as = m.symbols(shown=True)
+    
+    for x in range(0, len(curr_as)) :  
+        if (curr_as[x].match("considered",1)) :
+            # if (debug) :  print (x, ':', curr_as[x], ' <<< ', curr_as[x].arguments)
+            print(curr_as[x], ' ', curr_as[x].arguments)
+                
 def computeMax(m):
     global curr_as
     global minLength
@@ -178,12 +186,13 @@ def main(prg):
             t = t+1
 
 
-    
+    print("Before optimizing explanation ================")
     print (extraAction)
     print (set(changes_set))
     
+    print("After optimizing explanation ================")
     prg.ground([("optimal",[])]) 
-    prg.solve(None)
+    prg.solve(None, on_model=expl)
     
     end_time = datetime.datetime.now()
 
