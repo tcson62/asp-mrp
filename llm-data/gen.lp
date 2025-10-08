@@ -18,13 +18,21 @@ executable(A, T) :-  action(action(A)), occurs(A, T) , time(T), T < max,
 
 non_executable(A, T) :- action(action(A)), occurs(A, T) , time(T), not executable(A, T) . 
 
+non_executable_expl(A, T, X) :- action(action(A)), occurs(A, T) , time(T),  
+                            precondition(action(A), X, value(X, true)), not h(X, T).
+
 1{occurs(A, T)  : action(action(A))} 1 :- time(T), T < max.
 
 not_goal(T) :- time(T), goal(X, value(X, true)), not h(X, T).
 
+not_goal_expl(max, X) :- goal(X, value(X, true)), not h(X, max).
+
+
 #show executable/2.
 #show non_executable/2.
+#show non_executable_expl/3.
 #show not_goal/1. 
+#show not_goal_expl/2. 
 #show occurs/2. 
 #show time/1. 
 
