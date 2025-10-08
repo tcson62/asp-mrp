@@ -33,9 +33,33 @@ Code structures
 
 A script is given in run.sh  -->
 
+1. To run a single instance,
+
+```
 ./vrun.sh folder
+```
 
 folder contains human.lp and robot.lp
   
 Example:
+
+```
 ./vrun.sh test/Exp1
+```
+
+The explanation will be in the two sets: extraAction and changes_set in file hexplain.py (printed in console). extraAction contains the first set of explanations. The first set of explanations in combination with the human KB can be used to compute human plan. Verifying that the human plan's length is equal robot's plan results in an additional set of explanations (changes_set). After having the 2 sets of explanation, the program will run another time with optimal module to find the minimal explanation set. 
+
+For now, I show all the pre/postconditions or the initial state needed to add or remove. You can condense the output as you want. I leave it as your exercise (actually there is a part in the code did the job).
+
+2. To run all experimental instances,
+
+```
+./run_all.sh
+```
+
+The result will be printed in `result` file in the instance folder.
+Run time.py to show runtimes.
+
+<!-- # for whom is a student
+3. If you want to understand the computation process, a good starting point is run.sh. The core steps of the computation are clear. Personally, as a student, I was also given unfamilier code repositories with little documentation, and asked to edit them. I believe to understand how the computation works, reading the code and getting your hands dirty are the musts. Then you can ask the ones who wrote the code if you are still unable to figure out how things work.
+-->

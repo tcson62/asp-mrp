@@ -110,5 +110,6 @@ total_change(N) :- N1 = #count{1,(A,B,C,D) : add(postcondition(A, B, C, D))},
 % #show true/1.
 % #show h/2.
 % #show robot_action(A) : robot(action(A)).
-% #show remove/1.
+#show remove/1.
+#show add/1.
 #show total_change/1.
